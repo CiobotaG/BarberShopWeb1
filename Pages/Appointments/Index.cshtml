@@ -1,0 +1,89 @@
+﻿@page "/"
+@model BarberShopWeb.Pages.Appointments.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<form asp-page="./Index" method="get">
+ <div class="form-actions no-color">
+ <p>
+ Find by Appointment Name:
+ <input type="text" name="SearchString" value="@Model.CurrentFilter"
+/>
+ <input type="submit" value="Search" class="btn btn-primary" /> |
+ <a asp-page="./Index">Back to full List</a>
+ </p>
+ </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr><th>
+            <a asp-page="./Index" asp-route-sortOrder="@Model.AppointmentNameSort">
+                @Html.DisplayNameFor(model => model.Appointment[0].AppointmentName)
+            </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appointment[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appointment[0].HairstylistID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appointment[0].AppoitnmentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appointment[0].Salon)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Appointment[0].AppointmentCategories)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+ @foreach (var item in Model.AppointmentD.Appointments) {
+ string selectedRow = "";
+            if (item.Id == Model.AppointmentID)
+ {
+ selectedRow = "table-success";
+ }
+ <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.AppointmentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HairstylistID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppoitnmentDate)
+                </td>
+                <th>
+                    @Html.DisplayNameFor(modelItem => item.Salon.SalonName)
+                </th>
+                <td>
+                    @{
+                        foreach (var category in item.AppointmentCategories)
+                        {
+                            @category.Category.ID @: @category.Category.CategoryName <br />
+                        }
+                    }
+                </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

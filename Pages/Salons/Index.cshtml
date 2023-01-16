@@ -1,0 +1,73 @@
+﻿@page "{id:int?}"
+@model BarberShopWeb.Pages.Salons.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Salon[0].SalonName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SalonData.Salons)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.SalonID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.SalonName)
+            </td>
+                <td>
+                <a asp-page="./Index" asp-route-id="@item.ID">Select</a> |
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@if (Model.SalonData.Appointments != null)
+{
+    <h3>Appointments Edited by Selected Salon</h3>
+    <table class="table">
+
+        @foreach (var item in Model.SalonData.Salons)
+        {
+            string selectedRow = "";
+            if (item.ID == Model.SalonID)
+            {
+                selectedRow = "table-success";
+            }
+            <tr class="@selectedRow">
+
+                <td>
+                    @{
+                        foreach (var b in item.Appointments)
+                        {
+
+                            @b.AppointmentName @: @b.HairstylistID
+
+                            <br />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+
